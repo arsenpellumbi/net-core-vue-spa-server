@@ -1,0 +1,19 @@
+version: '3.4'
+
+services:
+  seq:
+    image: datalust/seq:latest
+
+  pigeonspaserver:
+    image: ${DOCKER_REGISTRY-}pigeonspaserver
+    build:
+      context: .
+      dockerfile: SpaServer/Dockerfile
+
+  pigeonspaserver.app:
+    image: ${DOCKER_REGISTRY-}pigeonspaserverapp
+    build:
+      context: .
+      dockerfile: SpaServer/ClientApp/Dockerfile
+    volumes:
+      - ./SpaServer/ClientApp:/app

@@ -1,0 +1,25 @@
+version: '3.4'
+
+services:
+  seq:
+    environment:
+      - ACCEPT_EULA=Y
+    ports:
+      - '5980:80'
+
+  pigeonspaserver:
+    build:
+      args:
+        - skip_client_build=true
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - Serilog__SeqServerUrl=${SEQ:-http://seq}
+      - OrchestratorType=${ORCHESTRATOR_TYPE}
+      - UseLoadTest=${USE_LOADTEST:-False}
+      - ReverseProxy__Clients__ProjectManager__TargetEndpoint=http://192.168.247.193:5101/api/v1
+    ports:
+      - '5990:80'
+
+  pigeonspaserver.app:
+    ports:
+      - '5970:80'
